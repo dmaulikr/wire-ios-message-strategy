@@ -131,8 +131,8 @@ extension FilePreprocessorTests {
             // THEN
             let encryptedData = self.uiMOC.zm_fileAssetCache.assetData(msg.nonce, fileName: name, encrypted: true)
             
-            XCTAssertEqual(msg.genericAssetMessage.asset.uploaded.sha256, encryptedData?.zmSHA256Digest())
-            if let key = msg.genericAssetMessage.asset.uploaded.otrKey , key.count > 0 {
+            XCTAssertEqual(msg.genericAssetMessage?.asset.uploaded.sha256, encryptedData?.zmSHA256Digest())
+            if let key = msg.genericAssetMessage?.asset.uploaded.otrKey , key.count > 0 {
                 XCTAssertEqual(encryptedData?.zmDecryptPrefixedPlainTextIV(key: key), testData)
             }
             else {
@@ -362,8 +362,8 @@ extension FilePreprocessorTests {
             // THEN
             let encryptedData = self.uiMOC.zm_fileAssetCache.assetData(msg.nonce, fileName: name, encrypted: true)
             
-            XCTAssertEqual(msg.genericAssetMessage.ephemeral.asset.uploaded.sha256, encryptedData?.zmSHA256Digest())
-            if let key = msg.genericAssetMessage.ephemeral.asset.uploaded.otrKey , key.count > 0 {
+            XCTAssertEqual(msg.genericAssetMessage?.ephemeral.asset.uploaded.sha256, encryptedData?.zmSHA256Digest())
+            if let key = msg.genericAssetMessage?.ephemeral.asset.uploaded.otrKey , key.count > 0 {
                 XCTAssertEqual(encryptedData?.zmDecryptPrefixedPlainTextIV(key: key), testData)
             }
             else {
@@ -382,7 +382,7 @@ extension FilePreprocessorTests {
             XCTAssertTrue(msg.isEphemeral)
             self.uiMOC.zm_fileAssetCache.storeAssetData(msg.nonce, fileName: name, encrypted: false, data: testData)
             do {
-                guard let asset = msg.genericAssetMessage.assetData else { return XCTFail() }
+                guard let asset = msg.genericAssetMessage?.assetData else { return XCTFail() }
                 XCTAssertFalse(asset.uploaded.hasOtrKey())
                 XCTAssertFalse(asset.uploaded.hasSha256())
             }
@@ -392,7 +392,7 @@ extension FilePreprocessorTests {
             
             // THEN
             do {
-                guard let asset = msg.genericAssetMessage.assetData else { return XCTFail() }
+                guard let asset = msg.genericAssetMessage?.assetData else { return XCTFail() }
                 XCTAssert(asset.uploaded.hasOtrKey())
                 XCTAssert(asset.uploaded.hasSha256())
             }
